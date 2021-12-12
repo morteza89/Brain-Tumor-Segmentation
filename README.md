@@ -8,10 +8,12 @@ Here is the link for accessing to the dataset :
 https://www.kaggle.com/mateuszbuda/lgg-mri-segmentation
 
 And here is my code that I run on kaggle and under just 10 epoches I could achieve accuracy of 99% with just 0.11 validation loss:
-https://www.kaggle.com/mortezaheidari/brain-mri-segmentation/edit
+https://www.kaggle.com/mortezaheidari/brain-mri-segmentation
 
 The code is so straightforward and easy to use.
 
 ## How to use it:
  In the setting parametters part you can change the DataPath to the directory that you saved files from Kaggle.
-Then you are able to change number of EPOCHS, BATCH_SIZE, ImgHieght, ImgWidth, Channels from their defult values to train model for other parametters. Your model for the best epoch results will be saved in MODEL_SAVE_PATH, so you should change it to a directory you like to save the model. If you dont like augmentation, you can turn the "Augmentation" flag to False.
+Then you are able to change number of EPOCHS, BATCH_SIZE, ImgHieght, ImgWidth, Channels from their defult values to train model for other parametters. 
+Your model for the best epoch results will be saved in MODEL_SAVE_PATH, so you should change it to a directory you like to save the model. 
+If you dont like augmentation, you can turn the "Augmentation" flag to False.
