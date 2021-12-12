@@ -28,8 +28,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 ######
 ## Setting parametters
-# DataPath = "/kaggle/input/lgg-mri-segmentation/kaggle_3m/"  # Path to the data
-DataPath = r'C:\Users\Morteza.Heidari\OneDrive - BioTelemetry, Inc\github-projects\segmentation-and-classification\segmentation-and-classification-\datasets\LGG Segmentation Dataset\kaggle_3m'
+DataPath = "/kaggle/input/lgg-mri-segmentation/kaggle_3m/"  # Path to the data
 EPOCHS = 35
 BATCH_SIZE = 32
 ImgHieght = 256
