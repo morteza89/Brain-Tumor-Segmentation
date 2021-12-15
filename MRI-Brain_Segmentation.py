@@ -26,9 +26,11 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLRO
 from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.losses import binary_crossentropy
 ######
-## Setting parametters
-DataPath = "/kaggle/input/lgg-mri-segmentation/kaggle_3m/"  # Path to the data
+# Setting parametters
+# DataPath = "/kaggle/input/lgg-mri-segmentation/kaggle_3m/"  # Path to the data
+DataPath = r'C:\Users\Morteza.Heidari\OneDrive - BioTelemetry, Inc\github-projects\segmentation-and-classification\segmentation-and-classification-\datasets\LGG Segmentation Dataset\kaggle_3m'
 EPOCHS = 35
 BATCH_SIZE = 32
 ImgHieght = 256
@@ -36,8 +38,43 @@ ImgWidth = 256
 Channels = 3
 MODEL_SAVE_PATH = "./models/model_unet_3m.h5"  # directory to save the  best model
 Augmentation = True  # True or False defines whether to use data augmentation or not
-BachNopm_Dropout = True #  it is better if we have batch normalization, we dont use dropout, and vise versa.
+BachNopm_Dropout = True  # it is better if we have batch normalization, we dont use dropout, and vise versa.
 ####
+# Here we define a class of all lose functions helpful to calculate the loss of the model
+
+
+class loss_functions():
+    def __init__(self):
+        pass
+
+    def dice_coefficient(self, y_true, y_pred, smooth=1):
+        y_true_f = K.flatten(y_true)
+        y_pred_f = K.flatten(y_pred)
+        intersection = K.sum(y_true_f * y_pred_f)
+        return (2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
+
+    def dice_loss(self, y_true, y_pred):
+        return 1-self.dice_coefficient(y_true, y_pred)
+
+    def bce_dice_loss(self, y_true, y_pred):
+        return binary_crossentropy(y_true, y_pred) + self.dice_loss(y_true, y_pred)
+
+    def sensitivity(self, y_true, y_pred):
+        y_true_f = K.flatten(y_true)
+        y_true_f = K.round(K.clip(y_true_f, 0, 1))
+        y_pred_f = K.flatten(y_pred)
+        y_pred_f = K.round(K.clip(y_pred_f, 0, 1))
+        true_positives = K.sum(y_true_f * y_pred_f)
+        possible_positives = K.sum(y_true_f)
+        return (true_positives / (possible_positives + K.epsilon()))
+
+    def specificity(self, y_true, y_pred):
+        true_negatives = K.sum(
+            K.round(K.clip((1 - y_true) * (1 - y_pred), 0, 1)))
+        possible_negatives = K.sum(K.round(K.clip(1 - y_true, 0, 1)))
+        return (true_negatives / (possible_negatives + K.epsilon()))
+
+####################################################################
 
 
 class Data_PreProcessing():
